@@ -18,7 +18,10 @@ Usage: import the module (see Jupyter notebooks for examples), or run from
     python3 balloon.py train --dataset=/path/to/balloon/dataset --weights=last
 
     # Train a new model starting from ImageNet weights
-    python3 balloon.py train --dataset=/path/to/balloon/dataset --weights=imagenet
+    python3 balloon.py train --dataset=/Users/miroslav.polacek/Dropbox\ \(Personal\)/Python/Mask_RCNN/datasets/balloon --weights=imagenet
+    
+    #Train on Tree Rings starting from ImageNet weights
+    python3 balloon.py train --dataset=/Users/miroslav.polacek/Dropbox\ \(Personal\)/Python/Mask_RCNN/datasets/treering --weights=imagenet
 
     # Apply color splash to an image
     python3 balloon.py splash --weights=/path/to/weights/file.h5 --image=<URL or path to file>
@@ -63,7 +66,7 @@ class BalloonConfig(Config):
 
     # We use a GPU with 12GB memory, which can fit two images.
     # Adjust down if you use a smaller GPU.
-    IMAGES_PER_GPU = 2
+    IMAGES_PER_GPU = 1
 
     # Number of classes (including background)
     NUM_CLASSES = 1 + 1  # Background + balloon
@@ -87,7 +90,7 @@ class BalloonDataset(utils.Dataset):
         subset: Subset to load: train or val
         """
         # Add classes. We have only one class to add.
-        self.add_class("balloon", 1, "balloon")
+        self.add_class("Ring", 1, "Ring")
 
         # Train or validation dataset?
         assert subset in ["train", "val"]
@@ -109,7 +112,7 @@ class BalloonDataset(utils.Dataset):
         # }
         # We mostly care about the x and y coordinates of each region
         # Note: In VIA 2.0, regions was changed from a dict to a list.
-        annotations = json.load(open(os.path.join(dataset_dir, "via_region_data.json")))
+        annotations = json.load(open(os.path.join(dataset_dir, "via_region_data_transformed.json")))
         annotations = list(annotations.values())  # don't need the dict keys
 
         # The VIA tool saves images in the JSON even if they don't have any

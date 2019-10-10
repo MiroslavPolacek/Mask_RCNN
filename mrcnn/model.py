@@ -7,6 +7,10 @@ Licensed under the MIT License (see LICENSE for details)
 Written by Waleed Abdulla
 """
 
+# Install the plaidml backend
+#import plaidml.keras
+#plaidml.keras.install_backend()
+
 import os
 import random
 import datetime
